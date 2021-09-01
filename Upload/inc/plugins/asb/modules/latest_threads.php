@@ -318,6 +318,10 @@ function asb_latest_threads_get_threadlist($settings, $width)
 		}
 	}
 
+	$forumsCache = cache_forums();
+
+	$prefixesCache = build_prefixes();
+
 	foreach ($threadCache as $thread) {
 		$forumpermissions[$thread['fid']] = forum_permissions($thread['fid']);
 
@@ -327,6 +331,28 @@ function asb_latest_threads_get_threadlist($settings, $width)
 			$forumpermissions[$thread['fid']]['canonlyviewownthreads'] == 1 &&
 			$thread['uid'] != $mybb->user['uid']) {
 			continue;
+		}
+
+		$forum = $forumsCache[$thread['fid']];
+
+		// the following is taken from the core for consistency
+		$forum['name'] = preg_replace("#&(?!\#[0-9]+;)#si", "&amp;", $forum['name']);
+		$forum['name'] = preg_replace("#&([^\#])(?![a-z1-4]{1,10};)#i", "&#038;$1", $forum['name']);
+
+		$thread['forumlink'] = get_forum_link($thread['fid']);
+
+		$thread['threadprefix'] = $thread['displayprefix'] = '';
+
+		if($thread['prefix'] && isset($prefixesCache[$thread['prefix']]))
+		{
+			$threadprefix = $prefixesCache[$thread['prefix']];
+
+			if(!empty($threadprefix['prefix']))
+			{
+				$thread['threadprefix'] = htmlspecialchars_uni($threadprefix['prefix']).'&nbsp;';
+
+				$thread['displayprefix'] = $threadprefix['displaystyle'].'&nbsp;';
+			}
 		}
 
 		$lastpostdate = my_date($mybb->settings['dateformat'], $thread['lastpost']);
