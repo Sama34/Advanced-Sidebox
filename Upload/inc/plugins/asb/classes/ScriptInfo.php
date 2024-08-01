@@ -114,5 +114,3 @@ class ScriptInfo extends PortableObject010102
 	 */
 	protected $tableName = 'asb_script_info';
 }
-
-?>

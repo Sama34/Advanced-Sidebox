@@ -152,5 +152,3 @@ abstract class StorableObject010001 extends MalleableObject010000 implements Sto
 		return $db->delete_query($this->tableName, "id='{$this->id}'");
 	}
 }
-
-?>

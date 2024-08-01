@@ -407,5 +407,3 @@ $l['asb_birthdays_no_content'] = 'no birthdays to show';
 
 $l['asb_birthdays_no_birthdays_today'] = 'No birthdays today.';
 $l['asb_birthdays_no_upcoming_birthdays'] = 'No upcoming birthdays.';
-
-?>

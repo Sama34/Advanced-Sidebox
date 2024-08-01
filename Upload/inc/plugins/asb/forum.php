@@ -541,5 +541,3 @@ function asb_xmlhttp()
 
 	exit;
 }
-
-?>

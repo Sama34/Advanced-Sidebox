@@ -484,5 +484,3 @@ function asb_latest_threads_settings_load()
 	</script>
 EOF;
 }
-
-?>

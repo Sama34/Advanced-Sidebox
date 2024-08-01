@@ -524,5 +524,3 @@ function asbGetAllThemes($full=false)
 
 	return $themeList;
 }
-
-?>

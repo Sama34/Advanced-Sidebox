@@ -16,5 +16,3 @@ interface WildcardPluginCacheInterface010200
 	public function getVersion();
 	public function setVersion($version);
 }
-
-?>

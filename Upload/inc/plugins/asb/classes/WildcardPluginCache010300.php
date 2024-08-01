@@ -155,5 +155,3 @@ abstract class WildcardPluginCache010300 implements WildcardPluginCacheInterface
 		$this->update('version', trim($version));
 	}
 }
-
-?>

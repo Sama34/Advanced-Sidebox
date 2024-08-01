@@ -181,5 +181,3 @@ function asbGetImagesFromPath($folder, $subfolder='', $recursive=false)
 
 	return $filenames;
 }
-
-?>

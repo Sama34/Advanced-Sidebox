@@ -254,5 +254,3 @@ function asb_recent_posts_get_content($settings, $script, $dateline)
 
 	return $postlist;
 }
-
-?>

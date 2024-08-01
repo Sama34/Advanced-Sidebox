@@ -2159,5 +2159,3 @@ function asb_admin_user_users_edit_commit_start()
 
 	$extra_user_updates['show_sidebox'] = $mybb->input['show_sidebox'];
 }
-
-?>
