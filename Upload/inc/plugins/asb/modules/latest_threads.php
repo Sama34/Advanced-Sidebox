@@ -21,7 +21,7 @@ function asb_latest_threads_info()
 {
 	global $lang;
 
-	if (!$lang->asb_addon) {
+	if (empty($lang->asb_addon)) {
 		$lang->load('asb_addon');
 	}
 
@@ -225,6 +225,8 @@ function asb_latest_threads_get_content($settings, $script, $dateline, $template
 	// Build a post parser
 	require_once MYBB_ROOT.'inc/class_parser.php';
 	$parser = new postParser;
+
+	$unviewwhere = $inactivewhere = '';
 
 	// get forums user cannot view
 	$unviewable = get_unviewable_forums(true);

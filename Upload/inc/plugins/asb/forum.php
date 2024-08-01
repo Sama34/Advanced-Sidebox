@@ -226,6 +226,8 @@ function asb_edit_template($boxes, $width, $script)
 {
 	global $mybb, $lang, $templates, $headerinclude, $theme;
 
+	$min = '';
+
 	if ($mybb->settings['asb_minify_js']) {
 		$min = '.min';
 	}
@@ -309,7 +311,7 @@ EOF;
 			$propName = "{$key}_content";
 			$widthName = "width_{$key}";
 			$width = $$widthName;
-			$show_column = $show[$key];
+			$show_column = $show[$key] ?? '';
 			$column_id = "asb_{$key}_column_id";
 			$insertName = $varName;
 			$sideboxes = $$insertName;
@@ -317,7 +319,7 @@ EOF;
 
 			$toggle_left = $toggle_right = '';
 			$toggle_name = "toggle_{$key}";
-			$$toggle_name = $toggles[$key];
+			$$toggle_name = $toggles[$key] ?? '';
 
 			eval("\$content = \"{$templates->get('asb_sidebox_column')}\";");
 
@@ -330,6 +332,8 @@ EOF;
 EOF;
 		}
 	}
+
+	$left_content = $left_content ?? '';
 
 	eval("\$insertTop = \"{$templates->get('asb_begin')}\";");
 	eval("\$insertBottom = \"{$templates->get('asb_end')}\";");

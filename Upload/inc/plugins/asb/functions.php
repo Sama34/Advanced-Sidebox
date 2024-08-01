@@ -140,7 +140,7 @@ function asbGetCurrentScript($asb, $getAll=false)
 {
 	global $mybb, $theme;
 
-	$tid = $theme['tid'];
+	$tid = !empty($theme['tid']) ? (int) $theme['tid'] : 0;
 	$thisKey = THIS_SCRIPT;
 
 	if (is_array($asb['scripts'][0][$thisKey]) &&
@@ -149,12 +149,12 @@ function asbGetCurrentScript($asb, $getAll=false)
 	}
 
 	foreach (array('action', 'page') as $key) {
-		$mybb->input[$key] = trim($mybb->input[$key]);
+		$mybb->input[$key] = trim($mybb->get_input($key));
 		if (!$mybb->input[$key]) {
 			continue;
 		}
 
-		$filename = THIS_SCRIPT."&{$key}={$mybb->input[$key]}";
+		$filename = THIS_SCRIPT."&{$key}={$mybb->get_input($key)}";
 		if (!is_array($asb['scripts'][0][$filename]) ||
 			empty($asb['scripts'][0][$filename])) {
 			continue;

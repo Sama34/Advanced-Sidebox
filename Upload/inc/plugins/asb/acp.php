@@ -568,16 +568,16 @@ EOF;
 
 	// if there are few scripts to choose from, alter the layout and/or wording of choices
 	switch (count($choices)) {
-	case 3:
-		$choices['all_scripts'] = $lang->asb_both_scripts;
-		break;
-	case 2:
-		unset($choices['all_scripts']);
-		$selectedScripts = array_flip($choices);
-		break;
-	case 1:
-		$choices['all_scripts'] = $lang->asb_all_scripts_disabled;
-		break;
+		case 3:
+			$choices['all_scripts'] = $lang->asb_both_scripts;
+			break;
+		case 2:
+			unset($choices['all_scripts']);
+			$selectedScripts = array_flip($choices);
+			break;
+		case 1:
+			$choices['all_scripts'] = $lang->asb_all_scripts_disabled;
+			break;
 	}
 
 	// which scripts
@@ -1183,64 +1183,64 @@ function asb_admin_view_scripts()
 
 				$deleted = false;
 				switch ($mybb->input['inline_action']) {
-				case 'update_width':
-					$action = $lang->asb_updated;
-					$changed = false;
-					$totalWidth = 0;
+					case 'update_width':
+						$action = $lang->asb_updated;
+						$changed = false;
+						$totalWidth = 0;
 
-					foreach (array('width_left', 'left_margin', 'width_middle', 'right_margin', 'width_right') as $key) {
-						if (isset($mybb->input[$key][$id])) {
-							$totalWidth += $mybb->input[$key][$id];
-							$script->set($key, $mybb->input[$key][$id]);
-							$changed = true;
+						foreach (array('width_left', 'left_margin', 'width_middle', 'right_margin', 'width_right') as $key) {
+							if (isset($mybb->input[$key][$id])) {
+								$totalWidth += $mybb->input[$key][$id];
+								$script->set($key, $mybb->input[$key][$id]);
+								$changed = true;
+							}
 						}
-					}
 
-					if ($totalWidth > 100) {
-						flash_message($lang->asb_script_save_width_error, 'error');
-						admin_redirect($redirect);
-					}
+						if ($totalWidth > 100) {
+							flash_message($lang->asb_script_save_width_error, 'error');
+							admin_redirect($redirect);
+						}
 
-					if ($changed == false) {
+						if ($changed == false) {
+							continue 2;
+						}
+
+						$scriptTid = (int) $script->get('tid');
+						if (!$viewingMaster &&
+							$scriptTid === 0) {
+							$script->set(array('id' => 0, 'tid' => $tid));
+						}
+
+						$script->save();
+						break;
+					case 'delete':
+						$action = $lang->asb_deleted;
+						if (!$script->remove()) {
+							continue 2;
+						}
+
+						$deleted = true;
+						break;
+					case 'activate':
+						$action = $lang->asb_activated;
+						if ($script->get('active')) {
+							continue 2;
+						}
+
+						$script->set('active', 1);
+						$script->save();
+						break;
+					case 'deactivate':
+						$action = $lang->asb_deactivated;
+						if (!$script->get('active')) {
+							continue 2;
+						}
+
+						$script->set('active', 0);
+						$script->save();
+						break;
+					default:
 						continue 2;
-					}
-
-					$scriptTid = (int) $script->get('tid');
-					if (!$viewingMaster &&
-						$scriptTid === 0) {
-						$script->set(array('id' => 0, 'tid' => $tid));
-					}
-
-					$script->save();
-					break;
-				case 'delete':
-					$action = $lang->asb_deleted;
-					if (!$script->remove()) {
-						continue 2;
-					}
-
-					$deleted = true;
-					break;
-				case 'activate':
-					$action = $lang->asb_activated;
-					if ($script->get('active')) {
-						continue 2;
-					}
-
-					$script->set('active', true);
-					$script->save();
-					break;
-				case 'deactivate':
-					$action = $lang->asb_deactivated;
-					if (!$script->get('active')) {
-						continue 2;
-					}
-
-					$script->set('active', false);
-					$script->save();
-					break;
-				default:
-					continue 2;
 				}
 
 				++$job_count;
@@ -1288,7 +1288,7 @@ function asb_admin_view_scripts()
 		}
 		exit;
 	} elseif (($mybb->input['mode'] == 'activate' ||
-		$mybb->input['mode'] == 'deactivate') &&
+			$mybb->input['mode'] == 'deactivate') &&
 		$mybb->input['id']) {
 		$script = new ScriptInfo((int) $mybb->input['id']);
 		$script->set('active', ($mybb->input['mode'] == 'activate'));
@@ -1803,7 +1803,7 @@ function asb_admin_xmlhttp()
 				asbCacheHasChanged();
 			}
 		}
-	// this routine allows the side box's visibility tool tip and links to be handled by JS after the side box is created
+		// this routine allows the side box's visibility tool tip and links to be handled by JS after the side box is created
 	} elseif($mybb->input['mode'] == 'build_info' && (int) $mybb->input['id'] > 0) {
 		$id = (int) $mybb->input['id'];
 		$sidebox = new SideboxObject($id);
@@ -1826,10 +1826,10 @@ $("#edit_sidebox_{$id}").click(function(event) {
 EOF;
 		// this HTML output will be directly stored in the side box's representative <div>
 		echo(asbBuildSideBoxInfo($sidebox, false, true).$script);
-	/*
-	 * searches for hooks, templates and actions and returns an
-	 * array of JSON encoded select box HTML for any that are found
-	 */
+		/*
+         * searches for hooks, templates and actions and returns an
+         * array of JSON encoded select box HTML for any that are found
+         */
 	} elseif($mybb->input['mode'] == 'analyze_script' &&
 		trim($mybb->input['filename'])) {
 		$content = asbDetectScriptInfo($mybb->input['filename'], $mybb->input['selected']);
@@ -2014,16 +2014,16 @@ function asb_admin_update_theme_select()
 $plugins->add_hook('admin_config_settings_change', 'asb_admin_config_settings_change');
 function asb_admin_config_settings_change()
 {
-    global $mybb;
+	global $mybb;
 
-    /* only serialize our setting if it is being saved
-	 * (thanks to Tanweth for helping me find this)
-	 *
-	 * we are checking for the existence of asb_show_empty_boxes
-	 * because checking for asb_exclude_theme fails if deselecting
-	 * all themes:
-	 * https://github.com/WildcardSearch/Advanced-Sidebox/issues/148
-	 */
+	/* only serialize our setting if it is being saved
+     * (thanks to Tanweth for helping me find this)
+     *
+     * we are checking for the existence of asb_show_empty_boxes
+     * because checking for asb_exclude_theme fails if deselecting
+     * all themes:
+     * https://github.com/WildcardSearch/Advanced-Sidebox/issues/148
+     */
 	if (isset($mybb->input['upsetting']['asb_show_empty_boxes'])) {
 		$mybb->input['upsetting']['asb_exclude_theme'] = serialize($mybb->input['upsetting']['asb_exclude_theme']);
 	}
@@ -2049,7 +2049,7 @@ $plugins->add_hook('admin_config_menu', 'asb_admin_config_menu');
 function asb_admin_config_menu(&$sub_menu)
 {
 	global $lang;
-	if (!$lang->asb) {
+	if (!isset($lang->asb)) {
 		$lang->load('asb');
 	}
 
