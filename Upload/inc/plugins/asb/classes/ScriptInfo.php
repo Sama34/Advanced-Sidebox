@@ -107,7 +107,7 @@ class ScriptInfo extends PortableObject010102
 	/**
 	 * @var bool
 	 */
-	protected $mobile_disabled = false;
+	protected $mobile_disabled = 0;
 
 	/**
 	 * @var string

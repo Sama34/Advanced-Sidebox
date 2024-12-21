@@ -133,8 +133,7 @@ function asb_start()
 	}
 
 	// does this column have boxes?
-	if (!is_array($filteredBoxes) ||
-		empty($filteredBoxes)) {
+	if (empty($filteredBoxes) || !is_array($filteredBoxes)) {
 		return;
 	}
 
@@ -386,14 +385,7 @@ EOF;
 	}
 
 	// replace everything on the page?
-	if ($script['replace_all'] == true) {
-		// if there is content
-		if ($script['replacement']) {
-			// replace the existing page entirely
-			$templates->cache[$script['template_name']] = str_replace(array('{$asb_left}', '{$asb_right}'), array($insertTop, $insertBottom), $script['replacement']);
-		}
-	// outputting to variables? (custom script/Page Manager)
-	} elseif($script['eval']) {
+	if($script['eval']) {
 		// globalize our columns
 		global $asb_left, $asb_right;
 
@@ -409,7 +401,14 @@ EOF;
 		eval("\$asb_left = \"".str_replace("\\'", "'", addslashes($insertTop))."\";");
 		eval("\$asb_right = \"".str_replace("\\'", "'", addslashes($insertBottom))."\";");
 	// otherwise we are editing the template in the cache
-	} else {
+	} elseif ($script['replace_all'] == true) {
+        // if there is content
+        if ($script['replacement']) {
+            // replace the existing page entirely
+            $templates->cache[$script['template_name']] = str_replace(array('{$asb_left}', '{$asb_right}'), array($insertTop, $insertBottom), $script['replacement']);
+        }
+        // outputting to variables? (custom script/Page Manager)
+    } else {
 		// make the edits
 		$script['find_top'] = str_replace("\r", '', $script['find_top']);
 		$script['find_bottom'] = str_replace("\r", '', $script['find_bottom']);
@@ -470,8 +469,7 @@ function asb_initialize()
 	$script = asbGetCurrentScript($asb, true);
 
 	// anything to show for this script?
-	if (!is_array($script['sideboxes']) ||
-		empty($script['sideboxes'])) {
+	if (empty($script) || empty($script['sideboxes']) || !is_array($script['sideboxes'])) {
 		return;
 	}
 

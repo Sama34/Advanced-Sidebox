@@ -1060,12 +1060,13 @@ function asb_admin_view_scripts()
 	if ($mybb->request_method == 'post') {
 		if ($mybb->input['mode'] == 'edit') {
 			$id = (int) $mybb->input['id'];
-			$redirectUrl = $html->url(array('action' => 'view_scripts', 'mode' => 'edit', 'tid' => $tid));
+			$redirectUrl = $html->url(array('action' => 'view_scripts', 'mode' => 'edit', 'tid' => $tid, 'id' => $id));
 
 			$mybb->input['action'] = $mybb->input['script_action'];
 			$script = new ScriptInfo($mybb->input);
 
-			$totalWidth = $mybb->input['width_left'] + $mybb->input['width_right'] + $mybb->input['width_middle'] + $mybb->input['left_margin'] + $mybb->input['right_margin'];
+			$totalWidth = $mybb->get_input('width_left', \MyBB::INPUT_FLOAT) + $mybb->get_input('width_right', \MyBB::INPUT_FLOAT) + $mybb->get_input('width_middle', \MyBB::INPUT_FLOAT) + $mybb->get_input('left_margin', \MyBB::INPUT_FLOAT) + $mybb->get_input('right_margin', \MyBB::INPUT_FLOAT);
+
 			if ($totalWidth > 100) {
 				flash_message($lang->asb_script_save_width_error, 'error');
 				admin_redirect($redirectUrl);
@@ -1416,7 +1417,7 @@ EOF;
 		$formContainer->output_row("{$lang->asb_action}:", $lang->sprintf($lang->asb_scriptvar_generic_desc, strtolower($lang->asb_action)), "{$spinner}<div id=\"action_list\"{$detectedShow}>{$detectedInfo['actions']}</div>".$form->generate_text_box('script_action', $data['action'], array('id' => 'action')));
 		$formContainer->output_row($lang->asb_page, $lang->sprintf($lang->asb_scriptvar_generic_desc, strtolower($lang->asb_page)), $form->generate_text_box('page', $data['page']));
 
-		$formContainer->output_row($lang->asb_disable_for_mobile_title, $lang->asb_disable_for_mobile_description, $form->generate_yes_no_radio('mobile_disabled', $data['mobile_disabled'], true, array('id' => 'mobile_disabled_yes', 'class' => 'mobile_disabled'), array('id' => 'mobile_disabled_no', 'class' => 'mobile_disabled')), '', array(), array('id' => 'mobile_disabled'));
+		$formContainer->output_row($lang->asb_disable_for_mobile_title, $lang->asb_disable_for_mobile_description, $form->generate_yes_no_radio('mobile_disabled', (int)$data['mobile_disabled'] ?? 0, true, array('id' => 'mobile_disabled_yes', 'class' => 'mobile_disabled'), array('id' => 'mobile_disabled_no', 'class' => 'mobile_disabled')), '', array(), array('id' => 'mobile_disabled'));
 
 		$formContainer->output_row($lang->asb_width_left, $lang->asb_width_left_desc, $form->generate_text_box('width_left', $data['width_left']));
 		$formContainer->output_row($lang->asb_left_margin, $lang->asb_left_margin_desc, $form->generate_text_box('left_margin', $data['left_margin']));
